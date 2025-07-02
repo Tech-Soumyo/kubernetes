@@ -1,0 +1,38 @@
+1> Make sure You have Docker
+2> Install Kind at your local machine -> using curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.22.0/kind-linux-amd64
+3> For creating cluster :
+    3.1> single cluster: kind create cluster --name local
+    3.2> create cluster with multiple workers:
+        3.2.1> create cluster.yml
+            kind: Cluster
+            apiVersion: kind.x-k8s.io/v1alpha4
+            nodes:
+            - role: control-plane
+            - role: worker
+            - role: worker
+        3.2.2>  Run kind create cluster --config clusters.yml --name local
+    3.3> To hit control panel from browser -> 
+        3.3.1> Run kubectl cluster-info -> you will get
+                kubectl cluster-info
+                Kubernetes control plane is running at https://127.0.0.1:37115
+                CoreDNS is running at https://127.0.0.1:37115/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+        3.3.2> create a firewall Rule at GCP console -> VPC Network -> Firewall -> Create Rule -> add the "37115" under tcp
+    3.4> All of your authorization credentials are stored by kind in ~/.kube/config
+4> Install  kubectl binary with curl on Linux -> using curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+5>  5.1>  kubectl get nodes
+    5.2>  kubectl get pods
+    5.3>  kubectl get nodes --v=8
+
+6> start this image locally -> 
+    6.1> docker run -p 3005:80 nginx
+    6.2> add this 3005 port at that firewall rule too
+    6.3> hit from browser http://<YOUR_GCP_VM_EXTERNAL_IP>:3005
+7> Starting a pod using k8s
+    7.1> kubectl run nginx --image=nginx --port=80
+    7.2> kubectl get pods
+    7.3> kubectl logs nginx
+    7.4> kubectl describe pod nginx
+    7.5>  kubectl delete pod nginx
+
+8> Kubernetes manifest -> A manifest defines the desired state for Kubernetes resources, such as Pods, Deployments, Services, etc., in a declarative manner
+Resource -> https://projects.100xdevs.com/tracks/kubernetes-1/Kubernetes-Part-1-9
